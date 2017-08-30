@@ -35,9 +35,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/oscm-i18n"/>
 	<classpathentry kind="src" path="/oscm-app-aws"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/oscm-billing-external-interfaces"/>
-    <classpathentry kind="lib" path="/libraries/glassfish4/modules/jackson-annotations.jar"/>
-    <classpathentry kind="lib" path="/libraries/glassfish4/modules/jackson-core.jar"/>
-    <classpathentry kind="lib" path="/libraries/glassfish4/modules/jackson-databind.jar"/>
     <classpathentry kind="lib" path="/libraries/glassfish4/modules/weld-osgi-bundle.jar"/>
     <classpathentry kind="lib" path="/libraries/glassfish4/modules/security-ee.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/oscm-tenantmgmt-intsvc"/>
