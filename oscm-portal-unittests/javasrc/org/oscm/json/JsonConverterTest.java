@@ -24,11 +24,11 @@ import java.util.List;
 
 import javax.faces.context.FacesContext;
 
+import com.google.gson.JsonSyntaxException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.oscm.ui.common.DurationValidation;
 import org.oscm.ui.dialog.mp.subscriptionwizard.SubscriptionWizardConversation;
 import org.oscm.ui.dialog.mp.subscriptionwizard.SubscriptionWizardConversationModel;
@@ -258,8 +258,7 @@ public class JsonConverterTest {
     }
 
     @Test
-    public void createJsonFromPricedParameterRows_ParamWithOptions()
-            throws JsonProcessingException {
+    public void createJsonFromPricedParameterRows_ParamWithOptions() {
         // given
         List<PricedParameterRow> list = givenPricedParameterRowList(true, false);
 
@@ -272,8 +271,7 @@ public class JsonConverterTest {
     }
 
     @Test
-    public void createJsonFromPricedParameterRows_ParamWithOptionsAndPrices()
-            throws JsonProcessingException {
+    public void createJsonFromPricedParameterRows_ParamWithOptionsAndPrices() {
         // given
         List<PricedParameterRow> list = givenPricedParameterRowList(true, true);
 
@@ -286,8 +284,7 @@ public class JsonConverterTest {
     }
 
     @Test
-    public void createJsonFromPricedParameterRows_ParamNoOptions()
-            throws JsonProcessingException {
+    public void createJsonFromPricedParameterRows_ParamNoOptions() {
         // given
         List<PricedParameterRow> list = givenPricedParameterRowList(false, false);
 
@@ -348,7 +345,7 @@ public class JsonConverterTest {
         assertEquals(new JsonObject(), jsonObject);
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = JsonSyntaxException.class)
     public void parseJsonString_Invalid() throws IOException {
         // when
         jsonConverter.parseJsonString(JSON_STRING_INVALID);

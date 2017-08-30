@@ -216,9 +216,6 @@
   	<copy file="${ivy.lib.dir}/weld-osgi-bundle-2.2.13.Final.jar" tofile="${root.dir}/libraries/glassfish4/modules/weld-osgi-bundle.jar" overwrite="true"/>
   	<copy file="${ivy.lib.dir}/web-core-4.1.1.jar" tofile="${root.dir}/libraries/glassfish4/modules/web-core.jar" overwrite="true"/>
   	<copy file="${ivy.lib.dir}/internal-api-4.1.1.jar" tofile="${root.dir}/libraries/glassfish4/modules/internal-api.jar" overwrite="true"/>
-  	<copy file="${ivy.lib.dir}/jackson-core-2.5.1.jar" tofile="${root.dir}/libraries/glassfish4/modules/jackson-core.jar" overwrite="true"/>
-  	<copy file="${ivy.lib.dir}/jackson-databind-2.5.1.jar" tofile="${root.dir}/libraries/glassfish4/modules/jackson-databind.jar" overwrite="true"/>
-  	<copy file="${ivy.lib.dir}/jackson-annotations-2.5.1.jar" tofile="${root.dir}/libraries/glassfish4/modules/jackson-annotations.jar" overwrite="true"/>
   	<copy file="${ivy.lib.dir}/security-ee-4.1.1.jar" tofile="${root.dir}/libraries/glassfish4/modules/security-ee.jar" overwrite="true"/>
   	<copy file="${ivy.lib.dir}/security-4.1.1.jar" tofile="${root.dir}/libraries/glassfish4/modules/security.jar" overwrite="true"/>
   	<copy file="${ivy.lib.dir}/websecurity-4.1.1.jar" tofile="${root.dir}/libraries/glassfish4/modules/websecurity.jar" overwrite="true"/>

@@ -8,7 +8,6 @@
 
 package org.oscm.billing.application.bean;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -16,10 +15,9 @@ import java.util.UUID;
 
 import javax.ws.rs.core.MediaType;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import org.oscm.billing.external.context.ContextKey;
 import org.oscm.billing.external.pricemodel.service.PriceModel;
 import org.oscm.billing.external.pricemodel.service.PriceModelContent;
@@ -105,23 +103,15 @@ public class LocalizedBillingResourceAssembler {
 
     static boolean isValidJSON(String jsonString)
             throws BillingApplicationException {
-
-        ObjectMapper om = new ObjectMapper();
         try {
-            JsonParser parser = om.getFactory().createParser(jsonString);
-            while (parser.nextToken() != null) {
-            }
-            return true;
-        } catch (JsonParseException jpe) {
+            JsonParser parser = new JsonParser();
+            JsonElement jsonTree = parser.parse(jsonString);
+        } catch (JsonSyntaxException jpe) {
             logger.logError(Log4jLogger.SYSTEM_LOG, jpe,
                     LogMessageIdentifier.ERROR_INVALID_JSON);
             return false;
-        } catch (IOException e) {
-            logger.logError(Log4jLogger.SYSTEM_LOG, e,
-                    LogMessageIdentifier.ERROR_IO_VALIDITY_EXTERNAL_JSON);
-            throw new BillingApplicationException(
-                    "IO Error when checking JSON validity of external price model description.");
         }
+        return true;
     }
 
     public static LocalizedBillingResource createPriceModelTag(Locale locale,

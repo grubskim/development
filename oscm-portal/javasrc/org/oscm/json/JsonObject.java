@@ -10,29 +10,20 @@ import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({ "id", "valueType" })
 public class JsonObject {
 
     public JsonObject() {
     }
 
-    @JsonInclude(Include.NON_EMPTY)
     private MessageType messageType;
 
-    @JsonInclude(Include.NON_EMPTY)
     private ResponseCode responseCode;
 
-    @JsonInclude(Include.NON_EMPTY)
     private String locale;
 
-    @JsonInclude(Include.NON_EMPTY)
     private List<JsonParameter> parameters = new ArrayList<JsonParameter>();
 
-    @JsonInclude(Include.NON_EMPTY)
     public String getLocale() {
         return locale;
     }

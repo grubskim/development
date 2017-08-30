@@ -354,15 +354,6 @@
     
     <dependency org="javax.interceptor" name="javax.interceptor-api" rev="1.2" transitive="false"/>
     <dependency org="org.jboss.weld" name="weld-osgi-bundle" rev="2.2.13.Final" transitive="false"/>
-    <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.5.1" transitive="false">
-      <artifact name="jackson-annotations" ext="jar"/>
-    </dependency>
-    <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.5.1" transitive="false">
-      <artifact name="jackson-core" ext="jar"/>
-    </dependency>
-    <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.5.1" transitive="false">
-      <artifact name="jackson-databind" ext="jar"/>
-    </dependency>
     <dependency org="org.glassfish.main.security" name="security" rev="4.1.1" transitive="false">
       <artifact name="security" ext="jar"/>
     </dependency>

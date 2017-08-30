@@ -8,18 +8,14 @@
 
 package org.oscm.json;
 
-import static org.oscm.ui.dialog.mp.subscriptionDetails.SubscriptionDetailsCtrlConstants.OUTCOME_ERROR;
 import static org.oscm.ui.dialog.mp.subscriptionDetails.SubscriptionDetailsCtrlConstants.VALIDATION_ERROR;
 
-import java.io.IOException;
 import java.util.Collection;
 
 import javax.faces.context.FacesContext;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.oscm.logging.Log4jLogger;
 import org.oscm.logging.LoggerFactory;
-import org.oscm.types.enumtypes.LogMessageIdentifier;
 import org.oscm.ui.common.ExternalParameterValidation;
 import org.oscm.ui.dialog.mp.interfaces.ConfigParamValidateable;
 import org.oscm.ui.dialog.mp.subscriptionDetails.ManageSubscriptionModel;
@@ -69,7 +65,7 @@ public class JsonParameterValidator {
     /**
      * Action for validation of parameters configured by an external tool
      *
-     * @param swc
+     * @param model
      * @return the logical outcome success.
      */
     public String validateConfiguredParameters(SubscriptionWizardConversationModel model) {
@@ -86,7 +82,7 @@ public class JsonParameterValidator {
     /**
      * Action for validation of parameters configured by an external tool
      *
-     * @param msc
+     * @param model
      * @return the logical outcome success.
      */
     public String validateConfiguredParameters(ManageSubscriptionModel model) {
@@ -120,11 +116,7 @@ public class JsonParameterValidator {
         String configResponse = model.getParameterConfigResponse();
 
         JsonObject jsonResponse = null;
-        try {
-            jsonResponse = converter.parseJsonString(configResponse);
-        } catch (IOException ioe) {
-            LOGGER.logError(Log4jLogger.SYSTEM_LOG, ioe, LogMessageIdentifier.ERROR);
-        }
+        jsonResponse = converter.parseJsonString(configResponse);
 
         return jsonResponse;
     }
@@ -145,24 +137,20 @@ public class JsonParameterValidator {
         return converter.updateValueObjects(jsonResponse, model.getService());
     }
 
-    private String validateParametersError(ConfigParamValidateable model, JsonObject jsonResponse) {
+    private String validateParametersError(ConfigParamValidateable model,
+            JsonObject jsonResponse) {
 
-        ParameterValidationResult validationResult = new ParameterValidationResult(true, null);
+        ParameterValidationResult validationResult = new ParameterValidationResult(
+                true, null);
         model.setParameterValidationResult(validationResult);
 
-        try {
-            JsonObject jsonRequest = converter.getServiceParametersAsJsonObject(
-                    model.getServiceParameters(),
-                    model.isReadOnlyParams(),
-                    model.isSubscriptionExisting());
+        JsonObject jsonRequest = converter.getServiceParametersAsJsonObject(
+                model.getServiceParameters(), model.isReadOnlyParams(),
+                model.isSubscriptionExisting());
 
-            JsonUtils.copyResponseParameters(jsonRequest, jsonResponse);
-            validationResult.setConfigRequest(converter.createJsonString(jsonRequest));
-            return VALIDATION_ERROR;
-        } catch (JsonProcessingException e) {
-            model.setHideExternalConfigurator(true);
-            return OUTCOME_ERROR;
-        }
-
+        JsonUtils.copyResponseParameters(jsonRequest, jsonResponse);
+        validationResult
+                .setConfigRequest(converter.createJsonString(jsonRequest));
+        return VALIDATION_ERROR;
     }
 }

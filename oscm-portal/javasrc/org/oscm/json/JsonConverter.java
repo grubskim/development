@@ -14,8 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonSyntaxException;
+import org.oscm.internal.types.enumtypes.ParameterValueType;
+import org.oscm.internal.vo.VOParameter;
 import org.oscm.logging.Log4jLogger;
 import org.oscm.logging.LoggerFactory;
 import org.oscm.string.Strings;
@@ -24,8 +25,9 @@ import org.oscm.ui.common.DurationValidation;
 import org.oscm.ui.common.UiDelegate;
 import org.oscm.ui.model.PricedParameterRow;
 import org.oscm.ui.model.Service;
-import org.oscm.internal.types.enumtypes.ParameterValueType;
-import org.oscm.internal.vo.VOParameter;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Converter between parameter VOs and JSON representation.
@@ -36,26 +38,24 @@ public class JsonConverter {
     private static final Log4jLogger LOGGER = LoggerFactory
             .getLogger(JsonConverter.class);
     private UiDelegate ui = new UiDelegate();
+    private Gson gson;
+
+    public JsonConverter() {
+        gson = new GsonBuilder()
+            .registerTypeAdapter(JsonObject.class, new CustomJsonObjectSerializer())
+            .create();
+    }
 
     public String createJsonFromPricedParameterRows(
             MessageType messageType, ResponseCode responseCode,
             List<PricedParameterRow> parameterRows, String locale,
-            boolean readonly, boolean editableOneTimeParams)
-            throws JsonProcessingException {
+            boolean readonly, boolean editableOneTimeParams) {
         return createJsonString(convertToJsonObject(messageType, responseCode,
                 parameterRows, locale, readonly, editableOneTimeParams));
     }
 
-    public String createJsonString(JsonObject jsonObject)
-            throws JsonProcessingException {
-        try {
-            ObjectMapper om = new ObjectMapper();
-            return om.writeValueAsString(jsonObject);
-        } catch (JsonProcessingException e) {
-            LOGGER.logError(Log4jLogger.SYSTEM_LOG, e,
-                    LogMessageIdentifier.ERROR_JSON_PROCESSING_FAILED);
-            throw e;
-        }
+    public String createJsonString(JsonObject jsonObject) {
+        return gson.toJson(jsonObject);
     }
 
     public JsonObject convertToJsonObject(MessageType messageType,
@@ -106,22 +106,20 @@ public class JsonConverter {
     }
 
     public JsonObject parseJsonString(String jsonString)
-            throws IOException {
-        ObjectMapper om = new ObjectMapper();
-        JsonObject jsonObject;
+            throws JsonSyntaxException {
+        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
         try {
-            jsonObject = om.readValue(jsonString, JsonObject.class);
             List<JsonParameter> params = jsonObject.getParameters();
             for (JsonParameter p : params) {
                 p.setDescription(EscapeUtils.unescapeJSON(p.getDescription()));
                 p.setValue(EscapeUtils.unescapeJSON(p.getValue()));
                 List<JsonParameterOption> options = p.getOptions();
                 for (JsonParameterOption opt : options) {
-                    opt.setDescription(EscapeUtils.unescapeJSON(opt
-                            .getDescription()));
+                    opt.setDescription(
+                            EscapeUtils.unescapeJSON(opt.getDescription()));
                 }
             }
-        } catch (IOException e) {
+        } catch (JsonSyntaxException e) {
             LOGGER.logError(Log4jLogger.SYSTEM_LOG, e,
                     LogMessageIdentifier.ERROR_JSON_IO_EXCEPTION, jsonString);
             throw e;
@@ -132,7 +130,6 @@ public class JsonConverter {
     public String getServiceParametersAsJsonString(
             List<PricedParameterRow> serviceParameters, boolean readOnlyParams, boolean subscriptionExisting) {
         String parameterJsonString;
-        try {
             parameterJsonString =
                     createJsonFromPricedParameterRows(
                             MessageType.CONFIG_REQUEST, null,
@@ -140,9 +137,6 @@ public class JsonConverter {
                             ui.getViewLocale().getLanguage(),
                             readOnlyParams,
                             !subscriptionExisting);
-        } catch (JsonProcessingException e) {
-            parameterJsonString = null;
-        }
         return parameterJsonString;
     }
 

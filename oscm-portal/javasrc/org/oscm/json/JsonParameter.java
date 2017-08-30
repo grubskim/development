@@ -10,8 +10,6 @@ import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class JsonParameter {
     public JsonParameter() {
@@ -19,9 +17,7 @@ public class JsonParameter {
 
     private String id;
     private String valueType;
-    @JsonInclude(Include.NON_EMPTY)
     private String minValue;
-    @JsonInclude(Include.NON_EMPTY)
     private String maxValue;
     private boolean mandatory;
     private String description;
@@ -49,7 +45,6 @@ public class JsonParameter {
         this.readonly = readonly;
     }
 
-    @JsonInclude(Include.NON_EMPTY)
     private List<JsonParameterOption> options = new ArrayList<JsonParameterOption>();
 
     public String getValue() {
