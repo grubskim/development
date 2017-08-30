@@ -17,7 +17,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.ConcurrencyManagement;
@@ -35,6 +34,8 @@ import javax.inject.Inject;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import org.slf4j.Logger;
 
 import org.oscm.app.business.APPlatformControllerFactory;
 import org.oscm.app.business.InstanceFilter;
@@ -73,7 +74,6 @@ import org.oscm.string.Strings;
 import org.oscm.types.enumtypes.OperationStatus;
 import org.oscm.types.exceptions.ObjectNotFoundException;
 import org.oscm.vo.VOUserDetails;
-import org.slf4j.Logger;
 
 /**
  * The timer service implementation

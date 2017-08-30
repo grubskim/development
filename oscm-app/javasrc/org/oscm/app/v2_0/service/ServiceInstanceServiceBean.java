@@ -9,7 +9,6 @@ package org.oscm.app.v2_0.service;
 
 import java.util.EnumSet;
 import java.util.List;
-
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -59,9 +58,9 @@ public class ServiceInstanceServiceBean {
             + ProvisioningStatus.WAITING_FOR_SYSTEM_UPGRADE.name();
 
     @Inject
-    private transient Logger logger;
+    protected transient Logger logger;
 
-    @Inject
+    @EJB
     private AsynchronousProvisioningProxyImpl appImpl;
 
     @EJB
